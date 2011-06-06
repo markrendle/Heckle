@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>@string.Format("Heckle {0}", Model.Presenter)</title>
+</head>
+<body>
+    <h1>Give @Model.Presenter feedback on @Model.Title</h1>
+
+    <form id="feedback-form" action="/feedback/@Model.Id" method="post">
+        <label id="comment-label" for="comment-textarea">Comment or question:</label>
+        <br />
+        <textarea id="comment-textarea" name="Comment" cols="120" rows="5">I want to have your babies.</textarea>
+        <br />
+        <input type=radio id="happy-radio" name=Happy title="I am happy" />
+        <label for="happy-radio"><img src="/content/Emoticon-Happy.png" alt=":)" /></label>
+        <input type=radio id="sad-radio" name=Sad title="I am sad" />
+        <label for="sad-radio"><img src="/content/Emoticon-Touchy.png" alt=":(" /></label>
+        <input type=radio id="confuse-radio" name=Confuse title="I am confused" />
+        <label for="confuse-radio"><img src="/content/Emoticon-Confuse.png" alt=":|" /></label>
+        <input type=radio id="disappoint-radio" name=Confuse title="I AM DISAPPOINT" />
+        <label for="disappoint-radio"><img src="/content/Emoticon-Sick.png" alt=":|" /></label>
+    </form>
+</body>
+</html>
