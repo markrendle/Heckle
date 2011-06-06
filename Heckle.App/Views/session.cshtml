@@ -2,23 +2,51 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>@string.Format("Heckle {0}", Model.Presenter)</title>
+    <style type="text/css">
+        .floatright { clear:right; float:right; }
+        .floatleft { clear:left; float:left; margin-right: 8px }
+        div#feedback-list { width: 50%; }
+        ul { list-style-type: none; padding: 0; margin: 0; }
+        p.feedback { margin-left: 8px }
+        li { min-height: 64px }
+        div#form { width: 50%; }
+    </style>
 </head>
 <body>
-    <h1>Give @Model.Presenter feedback on @Model.Title</h1>
-
-    <form id="feedback-form" action="/feedback/@Model.Id" method="post">
-        <label id="comment-label" for="comment-textarea">Comment or question:</label>
-        <br />
-        <textarea id="comment-textarea" name="Comment" cols="120" rows="5">I want to have your babies.</textarea>
-        <br />
-        <input type=radio id="happy-radio" name=Happy title="I am happy" />
-        <label for="happy-radio"><img src="/content/Emoticon-Happy.png" alt=":)" /></label>
-        <input type=radio id="sad-radio" name=Sad title="I am sad" />
-        <label for="sad-radio"><img src="/content/Emoticon-Touchy.png" alt=":(" /></label>
-        <input type=radio id="confuse-radio" name=Confuse title="I am confused" />
-        <label for="confuse-radio"><img src="/content/Emoticon-Confuse.png" alt=":|" /></label>
-        <input type=radio id="disappoint-radio" name=Confuse title="I AM DISAPPOINT" />
-        <label for="disappoint-radio"><img src="/content/Emoticon-Sick.png" alt=":|" /></label>
-    </form>
+    <h1>@Model.Title with @Model.Presenter</h1>
+    <div id="form" class=floatright>
+        <h2>Give @Model.Presenter feedback</h2>
+        <form id="feedback-form" action="/feedback/@Model.Id" method="post">
+            <label for="commenter-input">Your name (optional):</label>
+            <input type=text id="commenter-input" name="Commenter" maxlength=50 />
+            <br />
+            <label id="comment-label" for="comment-textarea">Comment or question:</label>
+            <br />
+            <textarea id="comment-textarea" name="Comment" cols="60" rows="5">I want to have your babies.</textarea>
+            <br />
+            <label for="happy-radio"><img src="/content/Emoticon-Happy.png" title="I am happy" alt="Happy" /></label>
+            <input type=radio id="happy-radio" name=Mood title="I am happy" value="Happy" />
+            <label for="sad-radio"><img src="/content/Emoticon-Sad.png" title="I am sad" alt="Sad" /></label>
+            <input type=radio id="sad-radio" name=Mood title="I am sad" value="Sad" />
+            <label for="confuse-radio"><img src="/content/Emoticon-Confuse.png" title="I am confused" alt="Confuse" /></label>
+            <input type=radio id="confuse-radio" name=Mood title="I am confused" value="Confuse" />
+            <label for="disappoint-radio"><img src="/content/Emoticon-Disappoint.png" title="I AM DISAPPOINT" alt="Disappoint" /></label>
+            <input type=radio id="disappoint-radio" name=Mood title="I AM DISAPPOINT" value="Disappoint" />
+            <input type="submit" value="Submit feedback" />
+        </form>
+    </div>
+    <div id="feedback-list">
+        <h2>Feedback</h2>
+        <ul>
+        @foreach (var feedback in @Model.Feedbacks)
+        {
+            var moodImage = @feedback.Mood + ".png";
+            <li>
+                <img src="/content/Emoticon-@moodImage" alt="@feedback.Mood" class=floatleft />
+                <p class=feedback>@feedback.Commenter says:<br />@feedback.Comment</p>
+            </li>
+        }
+        </ul>
+    </div>
 </body>
 </html>

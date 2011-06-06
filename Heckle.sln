@@ -3,6 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heckle.App", "Heckle.App\Heckle.App.csproj", "{040FB662-2AF3-4112-A81D-E9D9299DC145}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{E2AD637F-ADCC-4A90-824E-F4CE27EAB411}"
+	ProjectSection(SolutionItems) = preProject
+		Sql\Database.sql = Sql\Database.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
