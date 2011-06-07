@@ -9,7 +9,7 @@ using TinyIoC;
 
 namespace Heckle.App
 {
-    class StaticContentProvider
+    public class StaticContentProvider
     {
         private static readonly IDictionary<string, string> DefaultExtensions = new Dictionary<string, string>
                                                                                     {

@@ -1,22 +1,14 @@
 ﻿<!DOCTYPE html">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang=en>
 <head>
     <title>@string.Format("Heckle {0}", Model.Presenter)</title>
-    <style type="text/css">
-        .floatright { clear:right; float:right; }
-        .floatleft { clear:left; float:left; margin-right: 8px }
-        div#feedback-list { width: 50%; }
-        ul { list-style-type: none; padding: 0; margin: 0; }
-        p.feedback { margin-left: 8px }
-        li { min-height: 64px }
-        div#form { width: 50%; }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/Content/Site.css" />
 </head>
 <body>
     <h1>@Model.Title with @Model.Presenter</h1>
     <div id="form" class=floatright>
         <h2>Give @Model.Presenter feedback</h2>
-        <form id="feedback-form" action="/feedback/@Model.Id" method="post">
+        <form id="feedback-form" action="" method="post">
             <label for="commenter-input">Your name (optional):</label>
             <input type=text id="commenter-input" name="Commenter" maxlength=50 />
             <br />
@@ -43,7 +35,7 @@
             var moodImage = @feedback.Mood + ".png";
             <li>
                 <img src="/content/Emoticon-@moodImage" alt="@feedback.Mood" class=floatleft />
-                <p class=feedback>@feedback.Commenter says:<br />@feedback.Comment</p>
+                <p class=feedback>@feedback.Commenter says:<br />@feedback.Comment<br /><em><small>@feedback.Time.ToString("T")</small></em></p>
             </li>
         }
         </ul>

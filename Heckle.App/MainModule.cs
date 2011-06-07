@@ -16,30 +16,34 @@ namespace Heckle.App
         {
             Get["/"] = _ => View["index"];
 
-            Get["/session/{Event}/{Slot}/{Track}"] = req =>
+            Get["/{Event}/{Slot}/{Track}"] = req =>
                                                  {
-                                                     var session = _db.Sessions.FindByEventCodeAndSlotAndTrack(req.Event.Value,
-                                                                                                           req.Slot.Value,
-                                                                                                           req.Track.Value);
+                                                     var session = _db.Sessions.FindByEventCodeAndSlotAndTrack((string)req.Event,
+                                                                                                           (int)req.Slot,
+                                                                                                           (int)req.Track);
                                                      if (session == null) return HttpStatusCode.NotFound;
                                                      return View["session", session];
                                                  };
 
-            Post["/feedback/{SessionId}"] = req =>
-                                                          {
-                                                              var session = _db.Sessions.FindById(req.SessionId.Value);
-                                                             if (session == null) return HttpStatusCode.NotFound;
+            Post["/{Event}/{Slot}/{Track}"] = req =>
+                                                  {
+                                                      var session =
+                                                          _db.Sessions.FindByEventCodeAndSlotAndTrack(
+                                                              (string) req.Event,
+                                                              (int) req.Slot,
+                                                              (int) req.Track);
+                                                      if (session == null) return HttpStatusCode.NotFound;
 
-                                                              _db.Feedback.Insert(SessionId: session.Id,
-                                                                                  Comment: Request.Form.Comment.Value,
-                                                                                  Mood: Request.Form.Mood.Value ?? string.Empty
-                                                                                  );
-                                                              return
-                                                                  new RedirectResponse(
-                                                                      string.Format("/session/{0}/{1}/{2}",
-                                                                                    session.EventCode, session.Slot,
-                                                                                    session.Track));
-                                                          };
+                                                      _db.Feedback.Insert(SessionId: session.Id,
+                                                                          Comment: Request.Form.Comment.Value,
+                                                                          Mood: Request.Form.Mood.Value ?? string.Empty
+                                                          );
+                                                      return
+                                                          new RedirectResponse(
+                                                              string.Format("/{0}/{1}/{2}",
+                                                                            session.EventCode, session.Slot,
+                                                                            session.Track));
+                                                  };
         }
     }
 }

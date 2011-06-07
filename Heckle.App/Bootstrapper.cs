@@ -10,9 +10,9 @@ namespace Heckle.App
         {
             base.InitialiseInternal(container);
 
-            var staticContentHandler = new StaticContentProvider(container);
+            StaticContentModule.Provider = new StaticContentProvider(container);
 
-            BeforeRequest += ctx => staticContentHandler.Get(ctx.Request.Uri);
+            //BeforeRequest += ctx => staticContentHandler.Get(ctx.Request.Uri);
         }
     }
 }
