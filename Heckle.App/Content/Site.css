@@ -1,10 +1,15 @@
 ﻿body {
-    font-family:cursive
+    font-family:cursive;
+    min-width:480px;
+    margin-left:20%;
+    margin-right: 20%;
 }
 .floatright { clear:right; float:right; }
 .floatleft { clear:left; float:left; margin-right: 8px }
-div#feedback-list { width: 50%; }
+div#feedback-list { width: 50%; vertical-align:top; min-width:240px }
 ul { list-style-type: none; padding: 0; margin: 0; }
 p.feedback { margin-left: 8px }
 li { min-height: 64px }
-div#form { width: 50%; }
+div#form { width: 50%; vertical-align:top; min-width:240px }
+#comment-textarea { width: 98% }
+#feedback-fieldset { padding: 8px; margin-left:10% }

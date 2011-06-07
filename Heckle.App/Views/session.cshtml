@@ -7,30 +7,36 @@
 <body>
     <h1>@Model.Title with @Model.Presenter</h1>
     <div id="form" class=floatright>
-        <h2>Give @Model.Presenter feedback</h2>
         <form id="feedback-form" action="" method="post">
-            <label for="commenter-input">Your name (optional):</label>
-            <input type=text id="commenter-input" name="Commenter" maxlength=50 />
-            <br />
-            <label id="comment-label" for="comment-textarea">Comment or question:</label>
-            <br />
-            <textarea id="comment-textarea" name="Comment" cols="60" rows="5">I want to have your babies.</textarea>
-            <br />
-            <label for="happy-radio"><img src="/content/Emoticon-Happy.png" title="I am happy" alt="Happy" /></label>
-            <input type=radio id="happy-radio" name=Mood title="I am happy" value="Happy" />
-            <label for="sad-radio"><img src="/content/Emoticon-Sad.png" title="I am sad" alt="Sad" /></label>
-            <input type=radio id="sad-radio" name=Mood title="I am sad" value="Sad" />
-            <label for="confuse-radio"><img src="/content/Emoticon-Confuse.png" title="I am confused" alt="Confuse" /></label>
-            <input type=radio id="confuse-radio" name=Mood title="I am confused" value="Confuse" />
-            <label for="disappoint-radio"><img src="/content/Emoticon-Disappoint.png" title="I AM DISAPPOINT" alt="Disappoint" /></label>
-            <input type=radio id="disappoint-radio" name=Mood title="I AM DISAPPOINT" value="Disappoint" />
-            <input type="submit" value="Submit feedback" />
+            <fieldset id="feedback-fieldset">
+                <legend>Give @Model.Presenter feedback</legend>
+                <label for="commenter-input">Your name (optional):</label>
+                <input type=text id="commenter-input" name="Commenter" maxlength=50 />
+                <br />
+                <label id="comment-label" for="comment-textarea">Comment or question:</label>
+                <br />
+                <textarea id="comment-textarea" name="Comment" rows="5">I want to have your babies.</textarea>
+                <br />
+                <label for="ecstatic-radio"><img src="/content/Emoticon-Ecstatic.png" title="I am ecstatic" alt="Ecstatic" width="48" height="48" /></label>
+                <input type=radio id="ecstatic-radio" name=Mood title="I am ecstatic" value="Ecstatic" />
+                <label for="happy-radio"><img src="/content/Emoticon-Happy.png" title="I am happy" alt="Happy" width="48" height="48" /></label>
+                <input type=radio id="happy-radio" name=Mood title="I am happy" value="Happy" />
+                <label for="sad-radio"><img src="/content/Emoticon-Sad.png" title="I am sad" alt="Sad" width="48" height="48" /></label>
+                <input type=radio id="sad-radio" name=Mood title="I am sad" value="Sad" />
+                <label for="confuse-radio"><img src="/content/Emoticon-Confuse.png" title="I am confused" alt="Confuse" width="48" height="48" /></label>
+                <input type=radio id="confuse-radio" name=Mood title="I am confused" value="Confuse" />
+                <label for="disappoint-radio"><img src="/content/Emoticon-Disappoint.png" title="I AM DISAPPOINT" alt="Disappoint" width="48" height="48" /></label>
+                <input type=radio id="disappoint-radio" name=Mood title="I AM DISAPPOINT" value="Disappoint" />
+                <label for="hungry-radio"><img src="/content/Emoticon-Hungry.png" title="I am hungry" alt="Hungry" width="48" height="48" /></label>
+                <input type=radio id="hungry-radio" name=Mood title="I am hungry" value="Hungry" />
+                <input type="submit" value="Submit feedback" />
+            </fieldset>
         </form>
     </div>
     <div id="feedback-list">
         <h2>Feedback</h2>
         <ul>
-        @foreach (var feedback in @Model.Feedbacks)
+        @foreach (var feedback in @Model.Feedbacks.OrderByTimeDescending())
         {
             var moodImage = @feedback.Mood + ".png";
             <li>

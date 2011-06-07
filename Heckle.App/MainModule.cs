@@ -36,13 +36,14 @@ namespace Heckle.App
 
                                                       _db.Feedback.Insert(SessionId: session.Id,
                                                                           Comment: Request.Form.Comment.Value,
-                                                                          Mood: Request.Form.Mood.Value ?? string.Empty
+                                                                          Mood: Request.Form.Mood.Value ?? "Smile",
+                                                                          Commenter: Request.Form.Commenter.Value
                                                           );
                                                       return
-                                                          new RedirectResponse(
-                                                              string.Format("/{0}/{1}/{2}",
-                                                                            session.EventCode, session.Slot,
-                                                                            session.Track));
+                                                          new RedirectResponse(Request.Uri);
+                                                              //string.Format("/{0}/{1}/{2}",
+                                                              //              session.EventCode, session.Slot,
+                                                              //              session.Track));
                                                   };
         }
     }
