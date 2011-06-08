@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using Nancy;
@@ -16,6 +18,18 @@ namespace Heckle.App
         {
             Get["/"] = _ => View["index"];
 
+            Get["/feedback/{Event}/{Slot}/{Track}"] = req =>
+            {
+                var since = ((string)Request.Query.since).Replace(" UTC", string.Empty);
+                var sinceDate = DateTime.Parse(since, CultureInfo.CurrentCulture, DateTimeStyles.AdjustToUniversal);
+                var session = _db.Sessions.FindByEventCodeAndSlotAndTrack((string)req.Event,
+                                                                      (int)req.Slot,
+                                                                      (int)req.Track);
+                if (session == null) return HttpStatusCode.NotFound;
+                var feedbacks = session.Feedback.Where(_db.Feedback.Time > sinceDate).OrderByTimeDescending().ToList();
+                return new JsonResponse(feedbacks);
+            };
+
             Get["/{Event}/{Slot}/{Track}"] = req =>
                                                  {
                                                      var session = _db.Sessions.FindByEventCodeAndSlotAndTrack((string)req.Event,
@@ -24,6 +38,7 @@ namespace Heckle.App
                                                      if (session == null) return HttpStatusCode.NotFound;
                                                      return View["session", session];
                                                  };
+
 
             Post["/{Event}/{Slot}/{Track}"] = req =>
                                                   {
@@ -39,11 +54,7 @@ namespace Heckle.App
                                                                           Mood: Request.Form.Mood.Value ?? "Smile",
                                                                           Commenter: Request.Form.Commenter.Value
                                                           );
-                                                      return
-                                                          new RedirectResponse(Request.Uri);
-                                                              //string.Format("/{0}/{1}/{2}",
-                                                              //              session.EventCode, session.Slot,
-                                                              //              session.Track));
+                                                      return new RedirectResponse(Request.Uri);
                                                   };
         }
     }
