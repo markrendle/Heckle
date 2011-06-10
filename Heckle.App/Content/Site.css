@@ -13,3 +13,5 @@ li { min-height: 64px }
 div#form { width: 50%; vertical-align:top; min-width:240px }
 #comment-textarea { width: 98% }
 #feedback-fieldset { padding: 8px; margin-left:10% }
+table { border-width: 1px }
+td { border-width: 1px; border-color:Black; border-style:solid }

@@ -1,9 +1,31 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html>
+<html lang=en>
 <head>
-    <title>Heckle</title>
+    <link rel="stylesheet" type="text/css" href="/Content/Site.css" />
+    <title>Heckle at DDD South West 3</title>
 </head>
 <body>
-    <h1>Welcome to Heckle</h1>
+    <h1>Heckle at DDD South West 3</h1>
+    <h2>Sessions</h2>
+    <table>
+        <tr>
+        @{
+            int lastSlot = 1;
+            foreach (var session in Model.Sessions)
+            {
+                if (session.Slot != lastSlot)
+                {
+                    @(Model.SplitRow)
+                }
+                <td>
+                    <a href="/@session.EventCode/@session.Slot/@session.Track">
+                        @session.Title<br />@session.Presenter
+                    </a>
+                </td>
+                lastSlot = session.Slot;
+            }
+        }
+        </tr>
+    </table>
 </body>
 </html>

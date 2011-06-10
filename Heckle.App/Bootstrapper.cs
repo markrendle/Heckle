@@ -11,8 +11,6 @@ namespace Heckle.App
             base.InitialiseInternal(container);
 
             StaticContentModule.Provider = new StaticContentProvider(container);
-
-            //BeforeRequest += ctx => staticContentHandler.Get(ctx.Request.Uri);
         }
     }
 }

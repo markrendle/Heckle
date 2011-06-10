@@ -13,10 +13,16 @@ namespace Heckle.App
 {
     public class MainModule : NancyModule
     {
-        private readonly dynamic _db = Database.OpenNamedConnection("local");
+        private readonly dynamic _db = Database.OpenNamedConnection("appharbor");
         public MainModule()
         {
-            Get["/"] = _ => View["index"];
+            Get["/"] = _ =>
+                           {
+                               dynamic model = new ExpandoObject();
+                               model.Sessions = _db.Sessions.All().OrderBySlot().ThenByTrack();
+                               model.SplitRow = new HtmlString("</tr><tr>");
+                               return View["index", model];
+                           };
 
             Get["/feedback/{Event}/{Slot}/{Track}"] = req =>
             {
