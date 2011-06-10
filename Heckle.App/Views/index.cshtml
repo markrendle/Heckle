@@ -9,6 +9,14 @@
     <h2>Sessions</h2>
     <table>
         <tr>
+        <th>Track 1</th>
+        <th>Track 2</th>
+        <th>Track 3</th>
+        <th>Track 4</th>
+        <th>Repeat Track</th>
+        <th>Getting Started</th>
+        </tr>
+        <tr>
         @{
             int lastSlot = 1;
             foreach (var session in Model.Sessions)
@@ -18,7 +26,7 @@
                     @(Model.SplitRow)
                 }
                 <td>
-                    <a href="/@session.EventCode/@session.Slot/@session.Track">
+                    <a href="/@session.EventCode/@session.Slot/@session.Track/">
                         @session.Title<br />@session.Presenter
                     </a>
                 </td>

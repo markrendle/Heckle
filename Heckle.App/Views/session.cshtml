@@ -8,7 +8,7 @@
     <script type="text/javascript">
         function getFeedback(since) {
             since = since || new Date(0).toUTCString();
-            $.get("/feedback/@Model.EventCode/@Model.Slot/@Model.Track?since=" + since)
+            $.get("/@Model.EventCode/@Model.Slot/@Model.Track/feedback?since=" + since)
             .success(function (data) {
                 for (var i in data) {
                     if (data[i].Time && data[i].Time != '')
@@ -29,7 +29,7 @@
     </script>
     <h1>@Model.Title with @Model.Presenter</h1>
     <div id="form" class=floatright>
-        <form id="feedback-form" action="" method="post">
+        <form id="feedback-form" action="feedback" method="post">
             <fieldset id="feedback-fieldset">
                 <legend>Give @Model.Presenter feedback</legend>
                 <label for="commenter-input">Your name (optional):</label>
@@ -61,7 +61,7 @@
         </ul>
     </div>
     <script type="text/javascript">
-        getFeedback();
+        setTimeout('getFeedback()', 500);
     </script>
 </body>
 </html>

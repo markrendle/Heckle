@@ -24,44 +24,56 @@ namespace Heckle.App
                                return View["index", model];
                            };
 
-            Get["/feedback/{Event}/{Slot}/{Track}"] = req =>
-            {
-                var since = ((string)Request.Query.since).Replace(" UTC", string.Empty);
-                var sinceDate = DateTime.Parse(since, CultureInfo.CurrentCulture, DateTimeStyles.AdjustToUniversal);
-                var session = _db.Sessions.FindByEventCodeAndSlotAndTrack((string)req.Event,
-                                                                      (int)req.Slot,
-                                                                      (int)req.Track);
-                if (session == null) return HttpStatusCode.NotFound;
-                var feedbacks = session.Feedback.Where(_db.Feedback.Time > sinceDate).OrderByTimeDescending().ToList();
-                return new JsonResponse(feedbacks);
-            };
+            Get["/{Event}/{Slot}/{Track}/feedback"] =
+                req =>
+                    {
+                        DateTime sinceDate = Request.Query.since != null
+                                                 ? ParseJavaScriptUtcDate(Request.Query.since)
+                                                 : new DateTime(1900, 1, 1);
 
-            Get["/{Event}/{Slot}/{Track}"] = req =>
-                                                 {
-                                                     var session = _db.Sessions.FindByEventCodeAndSlotAndTrack((string)req.Event,
-                                                                                                           (int)req.Slot,
-                                                                                                           (int)req.Track);
-                                                     if (session == null) return HttpStatusCode.NotFound;
-                                                     return View["session", session];
-                                                 };
+                        var feedbacks = _db.Sessions.QueryByEventCodeAndSlotAndTrack(req.Event, req.Slot, req.Track)
+                            .Feedback
+                            .Where(_db.Feedback.Time > sinceDate)
+                            .OrderByTimeDescending();
 
+                        return new JsonResponse<object>(feedbacks);
+                    };
 
-            Post["/{Event}/{Slot}/{Track}"] = req =>
-                                                  {
-                                                      var session =
-                                                          _db.Sessions.FindByEventCodeAndSlotAndTrack(
-                                                              (string) req.Event,
-                                                              (int) req.Slot,
-                                                              (int) req.Track);
-                                                      if (session == null) return HttpStatusCode.NotFound;
+            Get["/{Event}/{Slot}/{Track}"] =
+                req =>
+                    {
+                        var session = _db.Sessions.FindByEventCodeAndSlotAndTrack(req.Event, req.Slot, req.Track);
+                        if (session == null) return HttpStatusCode.NotFound;
+                        return View["session", session];
+                    };
 
-                                                      _db.Feedback.Insert(SessionId: session.Id,
-                                                                          Comment: Request.Form.Comment.Value,
-                                                                          Mood: Request.Form.Mood.Value ?? "Smile",
-                                                                          Commenter: Request.Form.Commenter.Value
-                                                          );
-                                                      return new RedirectResponse(Request.Uri);
-                                                  };
+            Post["/{Event}/{Slot}/{Track}/feedback"] =
+                req =>
+                    {
+                        var session = _db.Sessions.FindByEventCodeAndSlotAndTrack(req.Event, req.Slot, req.Track);
+                        if (session == null) return HttpStatusCode.NotFound;
+
+                        if (Request.Form.Comment != null)
+                        {
+                            string comment = Request.Form.Comment;
+                            string commenter = string.IsNullOrWhiteSpace(Request.Form.Commenter) ? "Anonymous" : Request.Form.Commenter;
+                            string mood = Request.Form.Mood == null ? "Happy" : Request.Form.Mood;
+
+                            _db.Feedback.Insert(SessionId: session.Id,
+                                                Comment: comment,
+                                                Mood: mood ?? "Happy",
+                                                Commenter: commenter
+                                );
+                        }
+                        return new RedirectResponse(Request.Uri.Replace("/feedback", "/"));
+                    };
+
+        }
+
+        private static DateTime ParseJavaScriptUtcDate(string since)
+        {
+            since = since.Replace(" UTC", string.Empty);
+            return DateTime.Parse(since, CultureInfo.CurrentCulture, DateTimeStyles.AdjustToUniversal);
         }
     }
 }

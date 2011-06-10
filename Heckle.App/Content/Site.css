@@ -1,5 +1,5 @@
 ﻿body {
-    font-family:cursive;
+    font-family:Tahoma,Verdana,sans-serif;
     min-width:480px;
     margin-left:20%;
     margin-right: 20%;
@@ -13,5 +13,5 @@ li { min-height: 64px }
 div#form { width: 50%; vertical-align:top; min-width:240px }
 #comment-textarea { width: 98% }
 #feedback-fieldset { padding: 8px; margin-left:10% }
-table { border-width: 1px }
-td { border-width: 1px; border-color:Black; border-style:solid }
+table { border-width: 1px; padding:0px }
+td { border-width: 1px; border-color:Black; border-style:solid; margin:0px; vertical-align:top; width:16.66% }
