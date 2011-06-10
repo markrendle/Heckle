@@ -3,8 +3,30 @@
 <head>
     <title>@string.Format("Heckle {0}", Model.Presenter)</title>
     <link rel="stylesheet" type="text/css" href="/Content/Site.css" />
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.1.js"></script>
+    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+    <script type="text/javascript">
+        function getFeedback(since) {
+            since = since || new Date(0).toUTCString();
+            $.get("/feedback/@Model.EventCode/@Model.Slot/@Model.Track?since=" + since)
+            .success(function (data) {
+                for (var i in data) {
+                    if (data[i].Time && data[i].Time != '')
+                        data[i].Time = new Date(parseInt(data[i].Time.substr(6))).toLocaleString();
+                }
+                $("#feedbackTemplate").tmpl(data).prependTo("#feedback-list");
+            });
+            setTimeout("getFeedback('" + new Date().toUTCString() + "')", 15000);
+        }
+    </script>
 </head>
 <body>
+    <script id="feedbackTemplate" type="text/x-jquery-tmpl">
+        <li>
+            <img src="/content/Emoticon-${Mood}.png" alt="${Mood}" class=floatleft />
+            <p class=feedback>${Commenter} says:<br />${Comment}<br /><em><small>${Time}</small></em></p>
+        </li>
+    </script>
     <h1>@Model.Title with @Model.Presenter</h1>
     <div id="form" class=floatright>
         <form id="feedback-form" action="" method="post">
@@ -15,7 +37,7 @@
                 <br />
                 <label id="comment-label" for="comment-textarea">Comment or question:</label>
                 <br />
-                <textarea id="comment-textarea" name="Comment" rows="5">I want to have your babies.</textarea>
+                <textarea id="comment-textarea" name="Comment" cols=60 rows="5">I want to have your babies.</textarea>
                 <br />
                 <label for="ecstatic-radio"><img src="/content/Emoticon-Ecstatic.png" title="I am ecstatic" alt="Ecstatic" width="48" height="48" /></label>
                 <input type=radio id="ecstatic-radio" name=Mood title="I am ecstatic" value="Ecstatic" />
@@ -33,18 +55,13 @@
             </fieldset>
         </form>
     </div>
-    <div id="feedback-list">
+    <div id="feedback">
         <h2>Feedback</h2>
-        <ul>
-        @foreach (var feedback in @Model.Feedbacks.OrderByTimeDescending())
-        {
-            var moodImage = @feedback.Mood + ".png";
-            <li>
-                <img src="/content/Emoticon-@moodImage" alt="@feedback.Mood" class=floatleft />
-                <p class=feedback>@feedback.Commenter says:<br />@feedback.Comment<br /><em><small>@feedback.Time.ToString("T")</small></em></p>
-            </li>
-        }
+        <ul id="feedback-list">
         </ul>
     </div>
+    <script type="text/javascript">
+        getFeedback();
+    </script>
 </body>
 </html>

@@ -6,7 +6,7 @@
 }
 .floatright { clear:right; float:right; }
 .floatleft { clear:left; float:left; margin-right: 8px }
-div#feedback-list { width: 50%; vertical-align:top; min-width:240px }
+div#feedback { width: 50%; vertical-align:top; min-width:240px }
 ul { list-style-type: none; padding: 0; margin: 0; }
 p.feedback { margin-left: 8px }
 li { min-height: 64px }
